@@ -13,7 +13,7 @@ s.boot;
 /*
  * list-3_03
  */
-{ SinOsc.ar().dup(2) }.play 
+{ SinOsc.ar().dup(2) }.play
 
 /*
  * list-3_04
@@ -142,10 +142,10 @@ x.free;
 (
 // Blip関数を定義し変数fに代入
 f = {
-	// 再生中に変更したいパラメータを引数として定義
-	arg freq = 440; // 周波数の引数。デフォルト値は440
-	// 引数freqの値をBlip.arの周波数パラメータに適用
-	Blip.ar(freq, 200, 0.7, 0.0).dup(2);
+  // 再生中に変更したいパラメータを引数として定義
+  arg freq = 440; // 周波数の引数。デフォルト値は440
+  // 引数freqの値をBlip.arの周波数パラメータに適用
+  Blip.ar(freq, 200, 0.7, 0.0).dup(2);
 };
 )
 
@@ -167,10 +167,10 @@ x.free;
 (
 // Blip関数を定義し変数fに代入
 f = {
-	// 複数の引数を定義 (周波数、倍音数、振幅)
-	arg freq = 440, numharm = 200, mul = 0.7;
-	// それぞれの引数をBlip.arの対応するパラメータに適用
-	Blip.ar(freq, numharm, mul, 0.0).dup(2);
+  // 複数の引数を定義 (周波数、倍音数、振幅)
+  arg freq = 440, numharm = 200, mul = 0.7;
+  // それぞれの引数をBlip.arの対応するパラメータに適用
+  Blip.ar(freq, numharm, mul, 0.0).dup(2);
 };
 )
 
@@ -192,8 +192,8 @@ x.free;
 (
 // Blip関数を定義し変数fに代入
 f = {
-	arg freq = 440, numharm = 200, mul = 0.7;
-	Blip.ar(freq, numharm, mul, 0.0).dup(2);
+  arg freq = 440, numharm = 200, mul = 0.7;
+  Blip.ar(freq, numharm, mul, 0.0).dup(2);
 };
 )
 
