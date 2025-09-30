@@ -5,14 +5,14 @@
  */
 Server.local.boot;
 
- /*
-  * list-2_02
-  */
+/*
+ * list-2_02
+ */
 {LocalOut.ar(a=CombN.ar(BPF.ar(LocalIn.ar(2)*7.5+Saw.ar([32,33],0.2),2**LFNoise0.kr(4/3,4)*300,0.1).distort,2,2,40));a}.play
 
- /*
-  * list-2_03
-  */
+/*
+ * list-2_03
+ */
 (
 {
   LocalOut.ar(
@@ -28,9 +28,9 @@ Server.local.boot;
 }.play
 )
 
- /*
-  * list-2_04
-  */
+/*
+ * list-2_04
+ */
 (
 /*
  * Nathaniel Virgo
@@ -585,11 +585,11 @@ f.value; // 関数を実行
 
 (
 ~result = if (1 > 0) { // if文の条件が真の場合に実行される関数
-    "Condition is true".postln;
-    100 // この関数が返す値
+  "Condition is true".postln;
+  100 // この関数が返す値
 } { // 条件が偽の場合に実行される関数
-    "Condition is false".postln;
-    0 // この関数が返す値
+  "Condition is false".postln;
+  0 // この関数が返す値
 };
 )
 // -> Condition is true
