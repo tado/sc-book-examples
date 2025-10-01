@@ -535,7 +535,7 @@ myArray[1][0].postln; // 3
 'symbolName'.class.postln;
 // -> Symbol
 
-(\freq: 440, \amp: 0.1).postln; // イベント (Event) のキーとしてシンボルを使用
+(\freq: 440, \amp: 0.1).postln; // 環境リテラル (Environment Literal) のキーとしてシンボルを使用
 // -> ( 'amp': 0.1, 'freq': 440 )
 
 /*
