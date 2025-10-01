@@ -294,7 +294,7 @@ string.size.postln;
 var symbol1, symbol2;
 // シンボル'aSynbol'の代入
 symbol1 = 'aSymbol';
-symbol2 = 'anotherSymbol';
+symbol2 = \anotherSymbol;
 // シンボルの内容を表示
 symbol1.postln;
 symbol2.postln;
