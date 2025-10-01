@@ -559,14 +559,14 @@ e.class.postln;
 /*
  * list-2_44
  */
-~myArray = [1, 2.0, "three", \four, [5, 6], { "A function".postln }];
+~myArray = [1, 2.0, "three", \four, [5, 6], { "Hello World".postln }];
 ~myArray.postln;
 // -> [ 1, 2.0, three, four, [ 5, 6 ], a Function ]
 
 ~myArray[0].postln; // 最初の要素 (インデックス 0) -> 1
 ~myArray[2].postln; // 3番目の要素 (インデックス 2) -> three
 ~myArray[4][1].postln; // 配列内の配列の要素にアクセス -> 6
-~myArray[5].value; // 配列内の関数を実行 -> A function
+~myArray[5].value; // 配列内の関数を実行 -> Hello World
 
 ~myArray.size.postln; // 配列の要素数 -> 6
 ~myArray.class.postln; // -> Array
