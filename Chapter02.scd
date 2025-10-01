@@ -39,7 +39,7 @@ Server.local.boot;
  */
 
 {
-  // 変数の宣言。各変数に何が入るかコメントで説明
+  // 変数の宣言
   var in, saw, mix, freq, rq, bpf, out;
 
   // LocalIn: オーディオ入力を取得するためのUnit Generator (UGen)
@@ -91,7 +91,7 @@ Server.local.boot;
  */
 (
 {
-  // 変数の宣言と、各変数の役割をコメントで説明
+  // 変数の宣言
   var impulse, ring, env;
 
   // Impulse: インパルス信号(非常に短いパルス)を生成するUGen
