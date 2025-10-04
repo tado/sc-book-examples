@@ -259,8 +259,8 @@ x = Synth("MyPercSynth");
 SynthDef.new("MyPercSynth",
   {
     // --- 引数の宣言 (arg) ---
-    // busに加え、変更可能にしたいパラメータを引数として定義します。
-    // 引数名 = デフォルト値 の形式で記述します。
+    // busに加え、変更可能にしたいパラメータを引数として定義
+    // 引数名 = デフォルト値 の形式で記述
     arg
     bus = 0,        // 出力バス
     freq = 110,     // 音源の周波数 (Hz)
@@ -299,14 +299,13 @@ SynthDef.new("MyPercSynth",
 
 // 1. 引数を指定せずに再生（デフォルト値が使用されます）
 // "デフォルト値での再生:".postln;
-x = Synth("MyPercSynth"); // freq: 110, numharm: 10, attk: 0.01, rel: 1.0, amp: 0.3
+x = Synth("MyPercSynth");
 
 (
 // 2. 周波数(freq)を 55Hz (A1) に変更して再生
-// "周波数を55Hzに変更:".postln;
 // Synth() の第2引数に、変更したい引数とその値を配列で指定
 // [引数名1(シンボル), 値1, 引数名2(シンボル), 値2, ...]
-x = Synth("MyPercSynth", [\freq: 55]); // 他の引数はデフォルト値
+x = Synth("MyPercSynth", [\freq: 55]);
 )
 
 (
