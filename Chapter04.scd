@@ -41,8 +41,7 @@ f = {
   freq = 220; // A3
 
   // 音源1: 基本周波数のサイン波
-  // SinOsc.ar(周波数, 位相(通常0.0), 振幅)
-  sig1 = SinOsc.ar(freq, 0.0, mul).dup(2); // ステレオ化
+  sig1 = SinOsc.ar(freq, 0.0, mul).dup(2);
 
   // 音源2: 周波数を変更したサイン波 (1.5倍 = 完全5度上)
   freq = freq * 1.5; // 330Hz (E4)
