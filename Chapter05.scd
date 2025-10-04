@@ -262,14 +262,14 @@ SynthDef("AmSynth_Perc",
     out = 0,
     gate = 1,      // Env.perc をトリガー（通常1で起動しすぐ完了）
     freq = 440,    // キャリア周波数
-    modFreq = 200, // モジュレーション周波数 (固定)
+    modFreq = 200, // モジュレーション周波数
     amp = 0.8;     // 全体の振幅
 
     // --- ローカル変数の宣言 ---
     var sig, env, mod;
 
     // --- モジュレータ信号の生成とスケーリング ---
-    // モジュレータ: 固定周波数 modFreq のサイン波
+    // モジュレータのサイン波
     mod = SinOsc.ar(modFreq);
     // .range(0, 1): 出力を0~1の範囲にマッピング (古典的AM)
     mod = mod.range(0, 1);
@@ -285,7 +285,7 @@ SynthDef("AmSynth_Perc",
     // --- エンベロープの作成 (Env.perc) ---
     // パーカッシブなエンベロープ (短いアタック、減衰)
     env = Env.perc();
-    env = EnvGen.kr(env, gate, doneAction: 2); // 自動解放
+    env = EnvGen.kr(env, gate, doneAction: 2);
 
     // --- エンベロープ適用と最終的な音量調整 ---
     sig = sig * env * amp;
@@ -336,14 +336,14 @@ SynthDef("RmSynth_Perc",
     out = 0,
     gate = 1,      // Env.perc をトリガー
     freq = 440,    // キャリア周波数
-    modFreq = 200, // モジュレーション周波数 (固定)
+    modFreq = 200, // モジュレーション周波数
     amp = 0.8;     // 全体の振幅
 
     // --- ローカル変数の宣言 ---
     var sig, env, mod;
 
     // --- モジュレータ信号の生成 ---
-    // モジュレータ: 固定周波数 modFreq のサイン波 (-1 ~ 1 の出力)
+    // モジュレータ modFreq のサイン波 (-1 ~ 1 の出力)
     mod = SinOsc.ar(modFreq);
     // リング変調なので、そのまま使う（または深さを調整する係数を掛ける）
 
@@ -446,7 +446,7 @@ SynthDef("FmSynth",
     amp = 0.5;        // 全体の最終的な音量
 
     // ローカル変数の宣言
-    var modFreq, modDepth, indexNoiseMod, mod, car, sig, env; // indexMod -> indexNoiseMod に変更
+    var modFreq, modDepth, indexNoiseMod, mod, car, sig, env;
 
     // モジュレータ周波数
     modFreq = carFreq * ratio;
@@ -540,8 +540,9 @@ x = Synth("noiseHPF", [\cutoff: 5000, \rq: 0.8, \amp: 0.1]); // 高めのカッ�
 y = Synth("noiseHPF", [\cutoff: 1000, \rq: 0.1, \amp: 0.05]); // 低めのカットオフ、強いレゾナンス
 
 // 別の設定を試す
-x.set(\cutoff, 15000); // 非常に高いカットオフ
-y.set(\cutoff, 200); // 低いカットオフ
+// 別の設定を試す
+x.set(\cutoff, 10000); x.set(\rq, 0.05); // 非常に高いカットオフ
+y.set(\cutoff, 200); y.set(\rq, 1.0);// 低いカットオフ
 
 // 終わったら解放
 x.free; y.free;
