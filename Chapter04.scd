@@ -125,7 +125,7 @@ Env.adsr(attackTime: 0.1, decayTime: 0.3, sustainLevel: 0.5, releaseTime: 1.0, l
 (
 // パーカッシブなエンベロープを持つSinOscを演奏するFunction
 f = {
-  // var: Function内で使用するローカル変数を宣言
+  // ローカル変数を宣言
   var sig, env;
 
   // エンベロープ形状を定義 (Env.percを使用)
@@ -196,11 +196,15 @@ x.set(\gate, 0);
 // Functionベース: パーカッシブな音
 f = {
   var sig, env;
-  env = Env.perc(); // デフォルトのEnv.perc
-  env = EnvGen.kr(env, doneAction: Done.freeSelf); // コントロールレートで生成、自動解放
-  sig = Blip.ar(110, 10); // 音源 (Blip)
-  sig = sig * env; // エンベロープ適用
-  sig = sig.dup(2); // ステレオ化
+  // エンベロープの形状をEnv.percで作成
+  env = Env.perc();
+  // エンベロープを生成、演奏が終わると自動解放
+  env = EnvGen.kr(env, doneAction: Done.freeSelf);
+  // 音源 (Blip)
+  sig = Blip.ar(110, 10);
+  // 生成した音源にエンベロープを適用
+  sig = sig * env;
+  sig = sig.dup(2);
 };
 )
 // 再生
@@ -215,39 +219,37 @@ SynthDef.new(
   "MyPercSynth", // SynthDefの名前（シンボル）
   {
     // --- 引数の宣言 (arg) ---
-    // SynthDefが受け取る引数を定義します。
-    // bus: 出力バス番号 (必須に近い)。デフォルト0番。
+    // SynthDefが受け取る引数を定義
+    // bus: 出力バス番号を受けとる、デフォルト値は0
     arg bus = 0;
 
     // --- ローカル変数の宣言 (var) ---
-    var sig, env; // Functionと同じ
+    var sig, env;
 
     // --- エンベロープの定義 ---
-    env = Env.perc(attackTime: 0.01, releaseTime: 1.0, curve: -4); // パラメータを明示
+    env = Env.perc(attackTime: 0.01, releaseTime: 1.0, curve: -4);
 
     // --- エンベロープ信号の生成 ---
-    // doneActionも忘れずに指定します。
     env = EnvGen.kr(env, doneAction: Done.freeSelf);
 
     // --- 音源の生成 ---
-    sig = Blip.ar(110, 10); // 周波数などはまだ固定
+    sig = Blip.ar(110, 10);
 
     // --- エンベロープ適用とステレオ化 ---
-    sig = (sig * env).dup(2); // Functionと同じ
+    sig = (sig * env).dup(2);
 
     // --- 出力先の明示 (Out.ar) ---
-    // SynthDefでは、最終的な信号をどのバスに出力するかを Out UGen で明示する必要があります。
+    // 最終的な信号をどのバスに出力するかをOut、UGenで明示
     // Out.ar(出力バス番号, 出力する信号);
     Out.ar(bus, sig);
   }
   // --- サーバーへの登録 (.add) ---
-  // 定義したSynthDefをサーバーに送信し、コンパイル・登録します。
-  // これをしないと Synth("MyPercSynth") で呼び出せません。
+  // 定義したSynthDefをサーバーに送信し、コンパイル・登録
 ).add;
 )
 
 // --- 定義したSynthDefからSynthを生成して再生 ---
-x = Synth("MyPercSynth"); // 名前を指定してインスタンス化
+x = Synth("MyPercSynth");
 
 /*
  * list-4_09
