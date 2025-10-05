@@ -493,7 +493,7 @@ SynthDef("noiseLPF",
   // ホワイトノイズにローパスフィルター(RLPF)を適用するデモ
   {
     // 引数の宣言
-    arg out = 0, cutoff = 2000, rq = 1.0, amp = 0.1; // amp デフォルト値を少し下げる
+    arg out = 0, cutoff = 2000, rq = 1.0, amp = 0.1;
     var sig;
     // ホワイトノイズの生成
     sig = WhiteNoise.ar(); // ホワイトノイズの振幅はRLPF内で調整されるため、ここでは1.0で生成
@@ -511,8 +511,8 @@ x = Synth("noiseLPF", [\cutoff: 800, \rq: 0.5, \amp: 0.1]); // 低めのカッ�
 y = Synth("noiseLPF", [\cutoff: 4000, \rq: 0.1, \amp: 0.05]); // 高めのカットオフ、強いレゾナンス (音量注意)
 
 // 別の設定を試す (Synth実行中にパラメータ変更)
-x.set(\cutoff, 200); // さらに低いカットオフ
-y.set(\cutoff, 10000); // 高いカットオフ
+x.set(\cutoff, 200); x.set(\rq, 0.05); // さらに低いカットオフ
+y.set(\cutoff, 10000); y.set(\rq, 1.0);// 高いカットオフ
 
 // 終わったら解放
 x.free; y.free;
@@ -539,7 +539,6 @@ SynthDef("noiseHPF",
 x = Synth("noiseHPF", [\cutoff: 5000, \rq: 0.8, \amp: 0.1]); // 高めのカットオフ、シャープな音
 y = Synth("noiseHPF", [\cutoff: 1000, \rq: 0.1, \amp: 0.05]); // 低めのカットオフ、強いレゾナンス
 
-// 別の設定を試す
 // 別の設定を試す
 x.set(\cutoff, 10000); x.set(\rq, 0.05); // 非常に高いカットオフ
 y.set(\cutoff, 200); y.set(\rq, 1.0);// 低いカットオフ
@@ -572,8 +571,8 @@ x = Synth("noiseBPF", [\cutoff: 800, \rq: 0.05, \amp: 0.3]); // 低めの中心�
 y = Synth("noiseBPF", [\cutoff: 4000, \rq: 0.5, \amp: 0.1]); // 高めの中心周波数、広帯域 (ノイズ感が残る)
 
 // 別の設定を試す
-x.set(\rq, 0.01); // 非常に狭い帯域 (より強い音程感)
-y.set(\rq, 1.0); // 非常に広い帯域 (もとのノイズに近い)
+x.set(\cutoff, 8000); x.set(\rq, 0.01); // 非常に狭い帯域 (より強い音程感)
+y.set(\cutoff, 2000); y.set(\rq, 1.0); // 非常に広い帯域 (もとのノイズに近い)
 
 // 終わったら解放
 x.free; y.free;
@@ -607,13 +606,13 @@ SynthDef("simpleSub",
 }).add;
 )
 
-// 再生
 // 減算合成のシンプルなシンセサイザーを再生
-Synth("simpleSub", [\freq: 110, \cutoff: 400, \rq: 0.8, \amp: 0.3, \dur: 1.5]); // 暗く柔らかい音
-Synth("simpleSub", [\freq: 220, \cutoff: 2000, \rq: 0.2, \amp: 0.15, \dur: 0.5]); // 明るくレゾナンスが効いた音
-Synth("simpleSub", [\freq: 55, \cutoff: 100, \rq: 0.5, \amp: 0.4, \dur: 3.0]); // ベースのような太い音
-
-// 終わったら解放 (doneAction: 2 により自動解放される)
+// 暗く柔らかい音
+Synth("simpleSub", [\freq: 110, \cutoff: 400, \rq: 0.8, \amp: 0.3, \dur: 1.5]);
+// 明るくレゾナンスが効いた音
+Synth("simpleSub", [\freq: 220, \cutoff: 2000, \rq: 0.2, \amp: 0.15, \dur: 0.5]);
+// ベースのような太い音
+Synth("simpleSub", [\freq: 55, \cutoff: 100, \rq: 0.5, \amp: 0.4, \dur: 3.0]);
 
 /*
  * list-5_16
@@ -628,29 +627,26 @@ SynthDef("pulseSub",
     var freq, sig, env, cutoff;
 
     // カットオフ周波数を動的に変化させる信号
-    // VarSaw.kr: 鋸波に似ているが形状を変えられるオシレーター。ここではLFOとして使用。
-    // speed(Hz)で周期的に変化し、.exprangeで80Hzから8000Hzの範囲にマッピング。
-    // これによりフィルターのカットオフが複雑に動き、音色に時間変化を与える。
+    // VarSaw.kr: 鋸波に似ているが形状を変えられるオシレーター、LFOとして使用
+    // speed(Hz)で周期的に変化し、.exprangeで80Hzから8000Hzの範囲に
+    // これによりフィルターのカットオフが複雑に動き、音色を時間変化
     cutoff = VarSaw.kr(speed, width: 0.1).exprange(80, 8000);
 
     // パルス波の基本周波数を決定する信号
     // LFNoise0.kr: ランダムな値をspeed(Hz)のレートで生成するノイズジェネレータ。
-    // .range(10, 60): 出力範囲を10から60に設定。
-    // .midicps: これらの値をMIDIノートナンバーと解釈し、対応する周波数(Hz)に変換。
-    // 結果として、非常に低い周波数帯（約4Hz〜78Hz）がランダムに生成される。
-    // これは可聴音のピッチではなく、リズミカルなクリック列のような効果を生む。
+    // .range(10, 60): 出力範囲を10から60に設定
+    // .midicps: MIDIノートナンバーを対応する周波数(Hz)に変換
+    // リズミカルなクリック列のような効果
     freq = LFNoise0.kr(speed).range(10, 60).midicps;
 
-    // パルス波 (Pulse) の生成: 矩形波に近いがデューティ比を変えられる
-    // freq * [0.99, 1.01]: 左右チャンネルで周波数をわずかにずらし(デチューン)、ステレオ感を出す。
+    // パルス波 (Pulse) の生成
+    // freq * [0.99, 1.01]: 左右チャンネルで周波数をわずかにずらす
     sig = Pulse.ar(freq * [0.99, 1.01]);
 
     // ローパスフィルターの適用: 動的に変化する cutoff でフィルター
     sig = RLPF.ar(sig, cutoff, rq);
 
     // 最終的な音量調整
-    // このSynthDefは持続音を生成するため、EnvGenは使用しない。
-    // 停止するには .free を使う。
     sig = sig * amp;
 
     // 出力
@@ -660,7 +656,7 @@ SynthDef("pulseSub",
 
 // 再生
 x = Synth("pulseSub", [\speed: 2, \rq: 0.3, \amp: 0.15]); // ゆっくりした変化
-y = Synth("pulseSub", [\speed: 10, \rq: 0.05, \amp: 0.08]); // 速い変化、強いレゾナンス (音量注意)
+y = Synth("pulseSub", [\speed: 10, \rq: 0.05, \amp: 0.08]); // 速い変化、強いレゾナンス
 
 // 停止
 x.free;
@@ -708,7 +704,7 @@ SynthDef("supersaw",
     lfof2 = min(lfof1 * (lfo + 1), 22000);
 
     // --- 音源 (オシレーター) ---
-    // 複数のデチューンされた鋸波 (SawDPW) と三角波 (LFTri) をミックス
+    // 複数のデチューンされた鋸波 (Saw) と三角波 (LFTri) をミックス
     sig = (
       // 3つのSawを生成しミックス (SuperSaw風サウンド)
       0.5 * Mix.arFill(3, { arg i;
