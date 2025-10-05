@@ -183,7 +183,8 @@ r.stop;
 (
 f = {
   inf.do({
-    Synth("RLPF-Saw", [freq: 48.midicps, sustain: 0.8, amp: 0.5]); // 楽器を RLPF-Saw に変更、amp調整
+    // 楽器を RLPF-Saw に変更、amp調整
+    Synth("RLPF-Saw", [freq: 48.midicps, sustain: 0.8, amp: 0.5]);
     1.0.yield;
     Synth("RLPF-Saw", [freq: 60.midicps, sustain: 0.8, amp: 0.5]);
     2.do({
