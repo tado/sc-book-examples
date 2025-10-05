@@ -4,51 +4,45 @@
  * list-7_01
  */
 (
+// simple-sine
 // シンプルなサイン波とパーカッシブなエンベロープを持つ楽器
 SynthDef("simple-sine", {
-  // 引数: 出力バス、周波数、エンベロープの持続時間スケール、音量
   arg out = 0, freq = 440, sustain = 1.0, pan = 0.0, amp = 0.8;
   var sig, env;
-  // サイン波オシレーターを生成
   sig = SinOsc.ar(freq);
-  // Env.perc() でパーカッシブなエンベロープ（アタックが短く、ディケイで減衰）を生成
-  // levelScale で最終的な音量を、timeScale でエンベロープ全体の長さを調整
-  // doneAction: 2 でエンベロープ終了時にSynthインスタンスを自動的にサーバーから解放
   env = EnvGen.kr(Env.perc(), levelScale: amp, timeScale: sustain, doneAction: 2);
-  sig = sig * env; // エンベロープをオーディオ信号に適用
+  sig = sig * env;
   sig = Pan2.ar(sig, pan);
-  Out.ar(out, sig); // 指定されたバスに音声を出力
+  Out.ar(out, sig);
 }).add;
 
+// RLPF-Saw
 // ローパスフィルターのかかった鋸波の楽器
 SynthDef("RLPF-Saw", {
-  // 引数: 出力バス、周波数、エンベロープの持続時間スケール、音量
   arg out = 0, freq = 440, sustain = 1.0, cutoff = 2000, rq = 0.3, pan = 0.0, amp = 0.8;
   var sig;
-  // LFSaw (エイリアシングの少ない鋸波) を音源とし、パーカッシブなエンベロープを適用
-  sig = LFSaw.ar(freq, mul: EnvGen.kr(Env.perc(), levelScale: amp, timeScale: sustain, doneAction: 2));
-  // RLPF (レゾナンス付きローパスフィルター) を適用
-  // カットオフ周波数はLFNoise1 (ランダムLFO、1Hzで変動) で動的に変化
-  // LFNoise1の出力範囲を36半音(3オクターブ)幅、中心周波数を110HzのMIDIノートナンバー相当に設定し、.midicpsでHzに変換
-  sig = RLPF.ar(
-    sig, // フィルターへの入力信号
-    LFNoise1.kr(1, cutoff / 2, cutoff).abs, // カットオフ周波数 (Hz)
-    rq // レゾナンス (rq値、小さいほど効果が強い)
+  sig = LFSaw.ar(
+    freq,
+    mul: EnvGen.kr(Env.perc(), levelScale: amp, timeScale: sustain, doneAction: 2)
   );
-  sig = Pan2.ar(sig, pan); // パン (左右の定位) の設定
-  // 4つのオールパスフィルターを直列に通して、音に少し複雑な響き(簡易リバーブ/ディレイ効果)を加える
-  // 各AllpassNのディレイタイムは0.05秒以内のランダム値
+  sig = RLPF.ar(
+    sig,
+    LFNoise1.kr(1, cutoff / 2, cutoff).abs,
+    rq
+  );
+  sig = Pan2.ar(sig, pan);
   4.do({ sig = AllpassN.ar(sig, 0.05, [0.05.rand, 0.05.rand], 4) });
-  Out.ar(out, sig); // 音声を出力
+  Out.ar(out, sig);
 }).add;
 
+// FmSynth
 // FM変調シンセサイザー
 SynthDef("FmSynth",
   {
     arg  out = 0, gate = 1, freq = 440, ratio = 1.0, index = 3,
     attk = 0.01, rel = 1.0, idxNoiseRate = 0.2,
     sustain = 1.0, pan = 0, amp = 0.5;
-    var modFreq, modDepth, indexNoiseMod, mod, car, sig, env; // indexMod -> indexNoiseMod に変更
+    var modFreq, modDepth, indexNoiseMod, mod, car, sig, env;
     modFreq = freq * ratio;
     indexNoiseMod = LFNoise1.kr(idxNoiseRate).abs;
     modDepth = modFreq * index * indexNoiseMod;
@@ -57,7 +51,9 @@ SynthDef("FmSynth",
     env = Env.asr(attk, 1.0, rel);
     env = EnvGen.kr(env, gate, amp, 0.0, sustain, doneAction:2);
     sig = Pan2.ar((car * env), pan);
-    6.do({ sig = AllpassN.ar(sig, 0.05, [0.05.rand, 0.05.rand], 4) });
+    6.do({
+      sig = AllpassN.ar(sig, 0.05, [0.05.rand, 0.05.rand], 4)
+    });
     Out.ar(out, sig);
   }
 ).add;
