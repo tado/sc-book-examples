@@ -407,16 +407,18 @@ Pwrand([0, 1, 2], [0.1, 0.7, 0.2].normalizeSum, 10).asStream.all; // 1 が最も
  * list-7_23
  */
 (
+//パターンを再生
 p = Pbind(
   \instrument, "RLPF-Saw", // 楽器名
   \dur, 0.25, // 持続時間 (必須)
   \amp, 0.8, // 音量
   \midinote, Pseq([60, 64, 65, 67], inf) //C, E, F, G
-);
+).play;
 )
-// 再生
-p.play;
-//(Mac: Cmd+., Win:Ctl+. で停止)
+
+// 停止
+p.stop;
+
 
 /*
  * list-7_24
@@ -424,7 +426,7 @@ p.play;
 (
 // スケールを指定 (メジャースケール)
 ~scale = Scale.major;
-
+//パターンを再生
 p = Pbind(
   \instrument, "RLPF-Saw", // 楽器名
   \dur, 0.25, // 持続時間 (必須)
@@ -433,11 +435,12 @@ p = Pbind(
   // スケールの度数で音程を指定
   // 順番に音程をピックアップしてくりかえす
   \degree, Pseq([0, 1, 2, 3, 4, 5, 6, 7], inf)
-);
+).play;
 )
-// 再生
-p.play;
-//(Mac: Cmd+., Win:Ctl+. で停止)
+
+// 停止
+p.stop;
+
 
 /*
  * list-7_25
@@ -445,6 +448,7 @@ p.play;
 (
 // スケールを指定 (平調子)
 ~scale = Scale.hirajoshi;
+// パターンを再生
 p = Pbind(
   \instrument, "RLPF-Saw", // 楽器名
   \dur, 0.25, // 持続時間 (必須)
@@ -453,11 +457,12 @@ p = Pbind(
   // スケールの度数で音程を指定
   // ランダムに音程をピックアップ
   \degree, Prand([0, 1, 2, 3, 4, 5, 6, 7], inf)
-);
+).play;
 )
-// 再生
-p.play;
-//(Mac: Cmd+., Win:Ctl+. で停止)
+
+// 停止
+p.stop;
+
 
 /*
  * list-7_26
@@ -465,6 +470,7 @@ p.play;
 (
 // スケールを指定 (平調子)
 ~scale = Scale.hirajoshi;
+// パターンを再生
 p = Pbind(
   \instrument, "RLPF-Saw", // 楽器名
   \dur, 0.25, // 持続時間 (必須)
@@ -473,11 +479,11 @@ p = Pbind(
   // スケールの度数で音程を指定
   // 音程が重ならないようにランダムにピックアップ
   \degree, Pxrand([0, 1, 2, 3, 4, 5, 6, 7], inf)
-);
+).play;
 )
-// 再生
-p.play;
-//(Mac: Cmd+., Win:Ctl+. で停止)
+
+// 停止
+p.stop;
 
 /*
  * list-7_27
@@ -485,6 +491,7 @@ p.play;
 (
 // スケールを指定
 ~scale = Scale.ritusen; // 律旋法
+// パターンを再生
 p = Pbind(
   \instrument, "RLPF-Saw", // 楽器名
   \dur, 0.25, // 持続時間 (必須)
@@ -494,11 +501,11 @@ p = Pbind(
   \octave, Prand([3, 4, 5], inf), // オクターブ
   // ランダムに音程をピックアップ
   \degree, Pxrand([0, 1, 2, 3, 4, 5, 6, 7], inf)
-);
+).play;
 )
-// 再生
-p.play;
-//(Mac: Cmd+., Win:Ctl+. で停止)
+
+// 停止
+p.stop;
 
 /*
  * list-7_28
@@ -506,6 +513,7 @@ p.play;
 (
 // スケールを指定
 ~scale = Scale.ritusen; // 律旋法
+// パターンを再生
 p = Pbind(
   \instrument, "RLPF-Saw", // 楽器名
   // リズムもランダムに
@@ -517,16 +525,17 @@ p = Pbind(
   \octave, Prand([3, 4, 5], inf), // オクターブ
   // ランダムに音程をピックアップ
   \degree, Pxrand([0, 1, 2, 3, 4, 5, 6, 7], inf)
-);
+).play;
 )
-// 再生
-p.play;
-//(Mac: Cmd+., Win:Ctl+. で停止)
+
+// 停止
+p.stop;
 
 /*
  * list-7_29
  */
 (
+// パターンを再生
 p = Pbind(
   \instrument, "RLPF-Saw", // 楽器名
   // リズムもランダムに
@@ -553,45 +562,8 @@ p = Pbind(
   \octave, Prand([3, 4, 5], inf), // オクターブ
   // ランダムに音程をピックアップ
   \degree, Pxrand([0, 1, 2, 3, 4, 5, 6, 7], inf)
-);
+).play;
 )
-// 再生
-p.play;
-//(Mac: Cmd+., Win:Ctl+. で停止)
 
-/*
- * list-7_30
- */
-(
-p = Pbind(
-  \instrument, "RLPF-Saw", // 楽器名
-  // リズムもランダムに
-  \dur, PstepNadd(
-    Pseq([1, 0, 0, 1], 2),
-    Pshuf([1, 1, 2, 1], 2)
-  ).loop * (1/8),
-  // 定位もランダムに選択
-  \pan, Prand([-0.6, -0.2, 0, 0.2, 0.6], inf),
-  // ローパスフィルターのカットオフ周波数もランダムに
-  \cutoff, Pexprand(800, 15000, inf),
-  \sustain, Pexprand(0.2, 1.0, inf),
-  \amp, 0.8, // 音量
-  // スケールの設定
-  \scale, Prand([Scale.yu, Scale.hirajoshi, Scale.ritusen, Scale.minorPentatonic], inf),
-  \root, Pdup(
-    64,
-    Pseq([0, 0, 1, 2, 5], inf)
-  ),
-  //オクターブをランダムに設定 (3〜5)
-  \octave, Prand([3, 4, 5], inf), // オクターブ
-  // ランダムに音程をピックアップ
-  \degree, Pxrand([0, 1, 2, 3, 4, 5, 6, 7], inf)
-);
-)
-// 再生
-(
-p.play;
-p.play;
-p.play;
-)
-//(Mac: Cmd+., Win:Ctl+. で停止)
+// 停止
+p.stop;
