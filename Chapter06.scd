@@ -68,6 +68,7 @@ b[2].play;
 /*
  * list-6_04
  */
+//サウンドファイルへのパス
 b = Buffer.read(s, Platform.userHomeDir ++ "/Sounds/drum-loop-stereo.wav");
 
 b.duration;     // 長さ（秒）
@@ -81,9 +82,9 @@ b.query;        // いくつかの属性をまとめてポスト
  * list-6_05
  */
 (
-// サウンドファイルへの有効なパスに書き換えてください
 b = Buffer.readChannel(
   s,
+  //サウンドファイルへのパス
   Platform.userHomeDir ++ "/Sounds/guitar-mix-stereo.wav",
   channels: [0] // 左チャンネル(0番)のみを読み込む
 );
@@ -95,7 +96,7 @@ b.play;
  * list-6_06
  */
 (
-// このパスは、オーディオファイルが入ったフォルダへの有効なパスに書き換えてください
+//サウンドファイルの入ったフォルダへのパス
 var folder = PathName.new(Platform.userHomeDir ++ "/Sounds/");
 // folder.entriesでフォルダ内の全ファイル（PathNameオブジェクト）の配列を取得
 // .collectで各ファイルに対してBuffer.readを実行
@@ -128,7 +129,8 @@ b = Buffer.read(s, Platform.userHomeDir ++ "/Sounds/drum-loop-mono.wav");
 
 SynthDef(\playbuf_error, {
   arg nch = 1, buf = 0, out = 0;
-  // nchはargなので、実行時に変更可能。しかしPlayBufのチャンネル数は固定でなければならない。
+  // nchはargなので、実行時に変更可能
+  // しかしPlayBufのチャンネル数は固定でなければならない。
   var sig = PlayBuf.ar(nch, buf);
   Out.ar(out, sig ! 2);
 }).add;
@@ -449,10 +451,9 @@ x.release(2);
 b = Buffer.read(s, Platform.userHomeDir ++ "/Sounds/drum-loop-mono.wav");
 
 // --- 2. シンセサイザー定義 (SynthDef) ---
-SynthDef(\GrainSimple, // SynthDefに「GrainSimple」という名前を付けます。
+SynthDef(\GrainSimple,
   {
     // --- 2.1. 引数 (arg) の定義 ---
-    // Synthの動作を外部から制御するための引数を定義します。
     arg
     out = 0,       // 出力バスのインデックス
     trate = 20,    // 1秒あたりに生成するグレイン（音の粒）の数 (Hz)
@@ -462,7 +463,7 @@ SynthDef(\GrainSimple, // SynthDefに「GrainSimple」という名前を付け�
     amp = 1.0;     // 全体の音量
 
     // --- 2.2. ローカル変数の定義 ---
-    var sig, trigger, pos; // 使用するローカル変数を宣言
+    var sig, trigger, pos;
 
     // --- 2.3. グラニュラーシンセシスの実装 ---
     // Impulse UGenを使い、trateで指定された周波数でトリガー信号を生成
@@ -473,8 +474,8 @@ SynthDef(\GrainSimple, // SynthDefに「GrainSimple」という名前を付け�
     // .rangeメソッドで、LFOの出力範囲をバッファの開始位置(0)から終了位置(BufDur.kr(b))に設定
     pos = LFSaw.kr(speed).range(0, BufDur.kr(b));
 
-    // TGrains UGenを使い、グラニュラーシンセシスを行います。
-    // triggerが発生するたびに、バッファbのposで示される位置からグレインを生成します。
+    // TGrains UGenを使い、グラニュラーシンセシスを行う
+    // triggerが発生するたびに、バッファbのposで示される位置からグレインを生成
     sig = TGrains.ar(
       2,          // チャンネル数 (2: ステレオ)
       trigger,    // グレイン生成のトリガー
@@ -515,10 +516,9 @@ x.free();
 b = Buffer.read(s, Platform.userHomeDir ++ "/Sounds/guitar-mix-mono.wav");
 
 // --- 2. シンセサイザー定義 (SynthDef) ---
-SynthDef(\GrainRandpos, // SynthDefに「GrainSimple」という名前を付けます。
+SynthDef(\GrainRandpos,
   {
     // --- 2.1. 引数 (arg) の定義 ---
-    // Synthの動作を外部から制御するための引数を定義します。
     arg
     out = 0,       // 出力バスのインデックス
     trate = 40,    // 1秒あたりに生成するグレイン（音の粒）の数 (Hz)
@@ -545,8 +545,8 @@ SynthDef(\GrainRandpos, // SynthDefに「GrainSimple」という名前を付け�
     // パンニングをランダムに変化させる
     pan = Dseq([Dshuf([-1.0, -0.5, 0.0, 0.5, 1.0], 1)], inf);
 
-    // TGrains UGenを使い、グラニュラーシンセシスを行います。
-    // triggerが発生するたびに、バッファbのposで示される位置からグレインを生成します。
+    // TGrains UGenを使い、グラニュラーシンセシスを行う
+    // triggerが発生するたびに、バッファbのposで示される位置からグレインを生成
     sig = TGrains.ar(
       2,          // チャンネル数 (2: ステレオ)
       trigger,    // グレイン生成のトリガー
@@ -564,10 +564,10 @@ SynthDef(\GrainRandpos, // SynthDefに「GrainSimple」という名前を付け�
     sig = sig * env;
 
     // --- 2.3. 出力 ---
-    // 生成されたオーディオ信号(sig)を、outで指定されたバスに出力します。
+    // 生成されたオーディオ信号(sig)を、outで指定されたバスに出力
     Out.ar(out, sig);
   }
-).add; // 作成したSynthDefをサーバーに追加します。
+).add; // 作成したSynthDefをサーバーに追加
 )
 
 // 再生
