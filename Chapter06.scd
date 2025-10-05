@@ -598,7 +598,7 @@ b = Buffer.read(s, Platform.userHomeDir ++ "/Sounds/guitar-mix-mono.wav");
 SynthDef(\buf_grain_test, {
   // --- 2.1. 引数 (arg) の定義 ---
   arg out = 0,       // 出力バス
-  gate = 1,      // エンベロープのゲート（ただし、このSynthDef内では直接参照されていません）
+  gate = 1,      // エンベロープのゲート
   trate = 400,   // 1秒あたりのグレイン生成数 (Hz)
   dur = 0.1,     // 各グレインの長さ（秒）
   speed = 0.1,   // 再生位置を変化させる低速ノイズの周波数 (Hz)
