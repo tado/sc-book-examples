@@ -25,13 +25,18 @@ p = ProxySpace.push(s);
 // 音が途切れることなく滑らかに変化します。
 ~out = {SinOsc.ar([444, 440], 0, 0.2)};
 ~out = {RLPF.ar(Blip.ar([55, 56], 20, 0.4), LFNoise2.ar(1.0).range(100, 800), 0.2)};
-~out = {Pan2.ar(BrownNoise.ar(0.3), LFNoise0.ar(4.0).range(-1, 1))} ;
+~out = {Pan2.ar(BrownNoise.ar(0.3), LFNoise0.ar(4.0).range(-1, 1))};
 
 /*
  * list-8_03
  */
 // rateという引数を持つ音源を定義します。デフォルト値は1です。
-~out = {arg rate = 1; Pan2.ar(SinOsc.ar(880, 0.0, 0.2), Pulse.ar(rate).range(-1, 1))};
+(
+~out = {
+  arg rate = 1;
+  Pan2.ar(SinOsc.ar(880, 0.0, 0.2),Pulse.ar(rate).range(-1, 1));
+};
+)
 
 // .setメソッドを使い、rateの値を4に変更します。
 // \rateというシンボルで引数を指定します。
@@ -40,7 +45,11 @@ p = ProxySpace.push(s);
 // ホットスワップで別の音源に差し替えます。
 // この新しい音源もrateという引数を持っているので、先ほどの.set(4)が維持されます。
 // JITLibはプロキシに設定された値を記憶し、新しいソースにも適用しようと試みます。
-~out = {arg rate = 1; Pan2.ar(BrownNoise.ar(0.2), Pulse.ar(rate).range(-1, 1))};
+(
+~out = {
+  arg rate = 1;
+  Pan2.ar(BrownNoise.ar(0.2), Pulse.ar(rate).range(-1, 1))};
+)
 
 // rateの値をデフォルトの1に戻します。
 ~out.set(\rate, 1);
@@ -73,9 +82,9 @@ p = ProxySpace.push(s);
 /*
  * list-8_05
  */
-// 単項演算子: .absは絶対値を取ります。
+// 単項演算子: .absは絶対値を取る
 ~lfo2 = { SinOsc.kr(0.5, 0, 600, 100) };
-~lfo = ~lfo2.abs; // ~lfoは、~lfo2の出力の絶対値を取るプロキシになります。
+~lfo = ~lfo2.abs; // ~lfoは、~lfo2の出力の絶対値を取るプロキシになる
 ~lfo2 = { SinOsc.kr(1.3, 0, 600, 100) }; // ~lfo2の定義を変えると、~lfoの振る舞いも即座に変わります。
 
 // 二項演算子: プロキシ同士を足し算します。
