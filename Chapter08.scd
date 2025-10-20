@@ -264,7 +264,6 @@ currentEnvironment.clear; // 環境内の全てのプロキシをクリアしま
 ~out = { arg freq=500, ffreq=120; SinOsc.ar(freq*[1,1.1], SinOsc.ar(ffreq, 0, pi), 0.2) };
 ~out.set(\freq, 400 + 100.rand2);
 ~out.set(\ffreq, 30 + 20.rand2);
-~out.unset(\freq, \ffreq);   // 設定を解除します。
 ~out.set(\ffreq, 30 + 10.rand2, \freq, 500 + 200.rand2);
 
 
@@ -280,21 +279,6 @@ currentEnvironment.clear; // 環境内の全てのプロキシをクリアしま
 ~out.xset(\freq, 9000); // 2秒かけて値を変更します。
 ~lfo2 = { LFClipNoise.kr(3, 100, 200) };
 ~out.xmap(\ffreq, ~lfo2); // 2秒かけてマッピング先を変更します。
-
-// 引数のレートとラグ: .setRates, .lag
-// trig引数をトリガーレートに設定します。これにより、離散的な値を受け取れます。
-~out = { arg trig, dt=1; Decay2.kr(trig, 0.01, dt) * Mix(SinOsc.ar(7000 * [1.2, 1.3, 0.2])) }
-~out.setRates(\trig, \tr);
-~out.group.set(\trig, 0.1, \dt, 0.1);
-
-// .lagは引数にFilterを挟み込み、値の変化を滑らかにします。
-~out.lag(\xfreq, 1); // xfreq引数に1秒のラグを設定します。
-(
-~out = { arg trig, dt=1, xfreq=700;
-  Decay2.kr(trig, 0.01, dt) * Mix(SinOsc.ar(xfreq * [1.2, 1.3, 0.2]))
-};
-)
-~out.group.set(\xfreq, rrand(2000,9000)); // 値が滑らかに変化します。
 
 /*
  * list-8_15
