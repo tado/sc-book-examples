@@ -48,7 +48,7 @@ b[2].play;
 (
 b = [
   // サウンドファイルを3つ読み込み
-  // ファイルのパスはサウンドファイルを格納した場所に書き換えてください
+  // ファイルのパスはサウンドファイルを格納した場所に書き換える
   // この例ではユーザーディレクトリ以下に「Sounds」フォルダを作成して保存
   Buffer.read(s, Platform.userHomeDir ++ "/Sounds/drum-loop-stereo.wav"),
   Buffer.read(s, Platform.userHomeDir ++ "/Sounds/drum-mix-stereo.wav"),
@@ -75,7 +75,7 @@ b.duration;     // 長さ（秒）
 b.bufnum;       // バッファ番号
 b.numFrames;    // 全サンプルフレーム数
 b.numChannels;  // チャンネル数
-b.sampleRate;   // サンプルレート (Hz)
+b.sampleRate;   // サンプルレート（Hz）
 b.query;        // いくつかの属性をまとめてポスト
 
 /*
@@ -86,7 +86,7 @@ b = Buffer.readChannel(
   s,
   //サウンドファイルへのパス
   Platform.userHomeDir ++ "/Sounds/guitar-mix-stereo.wav",
-  channels: [0] // 左チャンネル(0番)のみを読み込む
+  channels: [0] // 左チャンネル（0番）のみを読み込む
 );
 )
 
@@ -143,7 +143,7 @@ SynthDef(\playbuf_error, {
 // サウンドファイルを読み込み
 b = Buffer.read(s, Platform.userHomeDir ++ "/Sounds/drum-loop-mono.wav");
 
-// モノラルファイル再生用のSynthDef (チャンネル数を1に固定)
+// モノラルファイル再生用のSynthDef（チャンネル数を1に固定）
 SynthDef(\playbuf_mono, {
   arg buf = 0, out = 0;
   // モノラル出力をステレオにパンニング
@@ -152,7 +152,7 @@ SynthDef(\playbuf_mono, {
 }).add;
 )
 
-// 先ほど読み込んだバッファ(モノラル)を再生
+// 先ほど読み込んだバッファ（モノラル）を再生
 Synth(\playbuf_mono, [buf: b.bufnum]);
 
 /*
@@ -245,7 +245,7 @@ b = Buffer.read(s, Platform.userHomeDir ++ "/Sounds/drum-loop-mono.wav");
 SynthDef(\bufrd_line, {
   arg buf = 0, out = 0;
   var sig, phs;
-  // 位相信号(phs): BufDur.kr(buf)秒かけて、0からバッファの最終フレーム(BufFrames.kr(buf) - 1)まで変化
+  // 位相信号(phs): BufDur.kr(buf)秒かけて、0からバッファの最終フレーム（BufFrames.kr(buf) - 1）まで変化
   phs = Line.ar(0, BufFrames.kr(buf) - 1, BufDur.kr(buf), doneAction: 2);
   sig = BufRd.ar(1, buf, phs).dup();
   Out.ar(out, sig);
@@ -266,7 +266,7 @@ SynthDef(\bufrd_phasor, {
   var sig, phs, finalRate;
   // サンプルレート補正
   finalRate = rate * BufRateScale.kr(buf);
-  // 位相信号(phs): 0からBufFrames.kr(buf)までをfinalRateの速さで繰り返し
+  // 位相信号（phs）：0からBufFrames.kr(buf)までをfinalRateの速さで繰り返し
   phs = Phasor.ar(rate: finalRate, start: 0, end: BufFrames.kr(buf));
   sig = BufRd.ar(1, buf, phs).dup();
   Out.ar(out, sig);
@@ -287,7 +287,7 @@ SynthDef(\bufrd_noise, {
   var sig, phs, finalRate;
   // サンプルレート補正
   finalRate = rate * BufRateScale.kr(buf);
-  // 位相信号(phs): 0からBufFrames.kr(buf)までをノイズで読み出す
+  // 位相信号（phs）：0からBufFrames.kr(buf)までをノイズで読み出す
   phs = LFNoise2.ar(0.5).range(0, BufFrames.kr(buf));
   sig = BufRd.ar(1, buf, phs).dup();
   Out.ar(out, sig);
@@ -393,16 +393,16 @@ x = {
   // sig = SinOsc.ar(freq.lag(0.01));
   sig = SinOsc.ar(freq.lag(0.1));
 
-  // 書き込み/読み込み用の位相信号(Phasorでループ)
+  // 書き込み/読み込み用の位相信号（Phasorでループ）
   phs = Phasor.ar(0, BufRateScale.kr(b), 0, BufFrames.kr(b));
 
-  // 現在の位相より少し前の位置から信号を読み出す (ディレイ)
+  // 現在の位相より少し前の位置から信号を読み出す（ディレイ）
   delay = BufRd.ar(2, b, phs - (SampleRate.ir / 4.0));
 
-  // 書き込み: 現在の音(sig)をバッファに書き込む
+  // 書き込み：現在の音（sig）をバッファに書き込む
   BufWr.ar(sig, b, phs);
 
-  // 出力: 現在の音(sig)と、少し前に録音した音(delay)をミックス
+  // 出力：現在の音（sig）と、少し前に録音した音（delay）をミックス
   sig = sig + delay;
   sig = sig * 0.25;
 }.play;
@@ -412,7 +412,7 @@ x = {
  * list-6_22
  */
 (
-// 2秒のバッファーを確保 (ステレオ)
+// 2秒のバッファーを確保（ステレオ）
 b = Buffer.alloc(s, s.sampleRate * 2.0, 2);
 // バッファをクリア
 b.zero;
@@ -426,10 +426,10 @@ x = {
 
   phs = Phasor.ar(0, BufRateScale.kr(b), 0, BufFrames.kr(b));
 
-  // バッファから読み出した音(フィードバック信号)
+  // バッファから読み出した音（フィードバック信号）
   delay = BufRd.ar(2, b, phs);
 
-  // 現在の音(sig)とフィードバック信号(delay)をミックス
+  // 現在の音（sig）とフィードバック信号（delay）をミックス
   sig = sig + (delay * 0.8);
 
   // ミックスした結果を再びバッファに書き込む
@@ -453,12 +453,12 @@ b = Buffer.read(s, Platform.userHomeDir ++ "/Sounds/drum-loop-mono.wav");
 // --- 2. シンセサイザー定義 (SynthDef) ---
 SynthDef(\GrainSimple,
   {
-    // --- 2.1. 引数 (arg) の定義 ---
+    // --- 2.1. 引数（arg）の定義 ---
     arg
     out = 0,       // 出力バスのインデックス
-    trate = 20,    // 1秒あたりに生成するグレイン（音の粒）の数 (Hz)
-    speed = 0.02,  // サンプル再生位置を動かすLFOの周波数 (Hz)
-    rate = 1.0,    // 各グレインの再生速度 (1.0が原曲と同じ速度)
+    trate = 20,    // 1秒あたりに生成するグレイン（音の粒）の数（Hz）
+    speed = 0.02,  // サンプル再生位置を動かすLFOの周波数（Hz）
+    rate = 1.0,    // 各グレインの再生速度（1.0が原曲と同じ速度）
     dur = 0.04,    // 各グレインの長さ（秒）
     amp = 1.0;     // 全体の音量
 
@@ -471,7 +471,7 @@ SynthDef(\GrainSimple,
     trigger = Impulse.ar(trate);
 
     // LFSaw（低周波鋸波）を使い、再生位置を周期的に変化させる
-    // .rangeメソッドで、LFOの出力範囲をバッファの開始位置(0)から終了位置(BufDur.kr(b))に設定
+    // .rangeメソッドで、LFOの出力範囲をバッファの開始位置（0）から終了位置（BufDur.kr(b)）に設定
     pos = LFSaw.kr(speed).range(0, BufDur.kr(b));
 
     // TGrains UGenを使い、グラニュラーシンセシスを行う
@@ -515,18 +515,18 @@ x.free();
 // --- 1. バッファへの音声ファイルの読み込み ---
 b = Buffer.read(s, Platform.userHomeDir ++ "/Sounds/guitar-mix-mono.wav");
 
-// --- 2. シンセサイザー定義 (SynthDef) ---
+// --- 2. シンセサイザー定義（SynthDef）---
 SynthDef(\GrainRandpos,
   {
-    // --- 2.1. 引数 (arg) の定義 ---
+    // --- 2.1. 引数（arg）の定義 ---
     arg
     out = 0,       // 出力バスのインデックス
-    trate = 40,    // 1秒あたりに生成するグレイン（音の粒）の数 (Hz)
-    speed = 0.02,  // サンプル再生位置を動かすLFOの周波数 (Hz)
+    trate = 40,    // 1秒あたりに生成するグレイン（音の粒）の数（Hz）
+    speed = 0.02,  // サンプル再生位置を動かすLFOの周波数（Hz）
     rate = 1.0,    // 全体的な音程
     posVar = 0.05, // 読み出し位置の分散
     dur = 0.04,    // 各グレインの長さ（秒）
-    fadeIn = 2.0,  // フェードイン時間(秒)
+    fadeIn = 2.0,  // フェードイン時間（秒）
     amp = 1.0;     // 全体の音量
 
     var sig, trigger, pos, rrate, pan, env; // 使用するローカル変数を宣言
@@ -564,7 +564,7 @@ SynthDef(\GrainRandpos,
     sig = sig * env;
 
     // --- 2.3. 出力 ---
-    // 生成されたオーディオ信号(sig)を、outで指定されたバスに出力
+    // 生成されたオーディオ信号（sig）を、outで指定されたバスに出力
     Out.ar(out, sig);
   }
 ).add; // 作成したSynthDefをサーバーに追加
@@ -594,15 +594,15 @@ z.free();
 // --- 1. バッファへの音声ファイルの読み込み ---
 b = Buffer.read(s, Platform.userHomeDir ++ "/Sounds/guitar-mix-mono.wav");
 
-// --- 2. シンセサイザー定義 (SynthDef) ---
+// --- 2. シンセサイザー定義（SynthDef）---
 SynthDef(\buf_grain_test, {
-  // --- 2.1. 引数 (arg) の定義 ---
+  // --- 2.1. 引数（arg）の定義 ---
   arg out = 0,       // 出力バス
   gate = 1,      // エンベロープのゲート
-  trate = 400,   // 1秒あたりのグレイン生成数 (Hz)
+  trate = 400,   // 1秒あたりのグレイン生成数（Hz）
   dur = 0.1,     // 各グレインの長さ（秒）
-  speed = 0.1,   // 再生位置を変化させる低速ノイズの周波数 (Hz)
-  posVar = 0.01, // 再生位置の揺らぎの大きさ (0.0 ~ 1.0)
+  speed = 0.1,   // 再生位置を変化させる低速ノイズの周波数（Hz）
+  posVar = 0.01, // 再生位置の揺らぎの大きさ（0.0 ~ 1.0）
   rate = 1.0,    // グレインの基本再生速度
   fadeIn = 8.0,  // 全体のエンベロープのフェードイン時間（秒）
   interp = 4,    // 補間の品質
@@ -618,7 +618,7 @@ SynthDef(\buf_grain_test, {
   // パン（ステレオ定位）の値を生成するパターンを定義
   pan = Dseq([Dshuf([-1.0, -0.5, 0.0, 0.5, 1.0], 1)], inf);
 
-  // グレインの再生速度を生成するパターンを定義し、基本速度(rate)を乗算します。
+  // グレインの再生速度を生成するパターンを定義し、基本速度（rate）を乗算します。
   rrate = Dseq([Dshuf([1.0, 1.5, 1.5**2, 1.5**3], 1)], inf) * rate;
 
   // 再生位置を決定、`speed`で制御されるゆっくりしたランダムな動きに、

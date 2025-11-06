@@ -17,7 +17,7 @@ SynthDef("simple-sine", {
 }).add;
 
 // RLPF-Saw
-// ローパスフィルターのかかった鋸波の楽器
+// ローパスフィルターのかかったノコギリ波の楽器
 SynthDef("RLPF-Saw", {
   arg out = 0, freq = 440, sustain = 1.0, cutoff = 2000, rq = 0.3, pan = 0.0, amp = 0.8;
   var sig;
@@ -74,14 +74,14 @@ Synth("simple-sine", [freq: 72.midicps, amp: 0.3]); // C5 (1オクターブ上�
  * list-7_03
  */
 (
-// 複数のSynth起動を関数 f にまとめる
+// 複数のSynth起動を関数fにまとめる
 f = {
   Synth("simple-sine", [freq: 60.midicps]);
   Synth("simple-sine", [freq: 64.midicps]);
   Synth("simple-sine", [freq: 67.midicps]);
 };
 
-// 関数 f からルーチン r を作成
+// 関数fからルーチンrを作成
 r = Routine(f);
 )
 
@@ -113,25 +113,25 @@ f = {
 r = Routine(f); // ルーチン作成
 )
 
-// ルーチンをリセットし、ステップごとに手動で実行 (.next)
+// ルーチンをリセットし、ステップごとに手動で実行（.next）
 r.reset;    // 実行状態をリセット
-r.next;     // 最初のSynthが鳴り、コンソールに"C4を再生"と表示。ルーチンは最初の .yield で停止し、1.0を返す。
-r.next;     // 1拍待った後、次のSynthが鳴り、"E4を再生"と表示。ルーチンは次の .yield で停止し、1.0を返す。
-r.next;     // 1拍待った後、最後のSynthが鳴り、"G4を再生"と表示。ルーチンは最後の .yield で停止し、1.0を返す。
-r.next;     // "ルーチン終了" がポストされ、ルーチンは完全に終了し、nilを返す。
+r.next;     // 最初のSynthが鳴り、コンソールに"C4を再生"と表示。ルーチンは最初の .yield で停止し、1.0を返す
+r.next;     // 1拍待った後、次のSynthが鳴り、"E4を再生"と表示。ルーチンは次の .yield で停止し、1.0を返す
+r.next;     // 1拍待った後、最後のSynthが鳴り、"G4を再生"と表示。ルーチンは最後の .yield で停止し、1.0を返す
+r.next;     // "ルーチン終了" がポストされ、ルーチンは完全に終了し、nilを返す
 
-// ルーチンをリセットし、最後まで自動再生 (.play)
-// .yield で指定された時間ごとにSynthが順番に鳴る
+// ルーチンをリセットし、最後まで自動再生（.play）
+// .yieldで指定された時間ごとにSynthが順番に鳴る
 r.reset.play;
 
 /*
  * list-7_05
  */
-// n.do を用いて指定回数くりかえす
+// n.doを用いて指定回数繰り返す
 (
 f = {
-  // このブロック全体 (3つのSynth起動と3回のyield) を4回繰り返す
-  4.do({ |i| // ループカウンタ i (0から3まで変化) も利用可能
+  // このブロック全体（3つのSynth起動と3回のyield）を4回繰り返す
+  4.do({ |i| // ループカウンタ i（0から3まで変化）も利用可能
     ("Loop iteration: " ++ i).postln; // ループ回数を出力
     Synth("simple-sine", [freq: 60.midicps, sustain: 0.4]);
     0.5.yield; // 半拍待機
@@ -154,12 +154,12 @@ r.reset.play;
 // くりかえしのネストと無限ループ
 (
 f = {
-  // inf.do は無限に繰り返す (停止するには r.stop が必要)
+  // inf.do は無限に繰り返す（停止するには r.stop が必要）
   inf.do({
     Synth("simple-sine", [freq: 48.midicps, sustain: 0.8]); // 低いC
     1.0.yield;
     Synth("simple-sine", [freq: 60.midicps, sustain: 0.8]); // 1オクターブ上のC
-    // 内側のループ: 2回繰り返す
+    // 内側のループ：2回繰り返す
     2.do({
       Synth("simple-sine", [freq: 65.midicps, sustain: 0.2]); // F
       0.25.yield;
@@ -179,7 +179,7 @@ r.stop;
 /*
  * list-7_07
  */
-// 使用する楽器 (SynthDef) を変更
+// 使用する楽器（SynthDef）を変更
 (
 f = {
   inf.do({
@@ -206,7 +206,7 @@ r.stop;
 /*
  * list-7_08
  */
-// loop を使った無限ループ (inf.do とほぼ同等)
+// loop を使った無限ループ（inf.do とほぼ同等）
 (
 f = {
   loop({ // loop はそれ自体が無限ループを意味する
@@ -271,25 +271,25 @@ r = Routine({
 });
 )
 
-// ルーチン r を TempoClock t 上で再生
+// ルーチンrをTempoClock t上で再生
 r.reset.play(t);
 
 
 // 再生中にテンポを変更
-t.tempo = 80/60;  // 80 BPM に変更 (ゆっくりになる)
-t.tempo = 160/60; // 160 BPM に変更 (速くなる)
-t.tempo = 240/60; // 240 BPM に変更 (さらに速くなる)
+t.tempo = 80/60;  // 80 BPM に変更（ゆっくりになる）
+t.tempo = 160/60; // 160 BPM に変更（速くなる）
+t.tempo = 240/60; // 240 BPM に変更（さらに速くなる）
 
 r.stop; // 停止
-t.clear; // 作成したクロックをクリア (不要になったら、関連するルーチンも止まる)
+t.clear; // 作成したクロックをクリア（不要になったら、関連するルーチンも止まる）
 
 /*
  * list-7_11
  */
 (
-t = TempoClock(132/60); // テンポクロック (132BPM)
+t = TempoClock(132/60); // テンポクロック（132BPM）
 
-// ベースライン風ルーチン (環境変数 ~r0 に格納)
+// ベースライン風ルーチン（環境変数~r0に格納）
 ~r0 = Routine({
   loop({
     [60, 63, 65, 67].do({ |n| // C, D#, F, G
@@ -299,7 +299,7 @@ t = TempoClock(132/60); // テンポクロック (132BPM)
   });
 });
 
-// 上声部風ルーチン (環境変数 ~r1 に格納)
+// 上声部風ルーチン（環境変数~r1に格納）
 ~r1 = Routine({
   loop({
     [70, 72, 75, 77].do({ |n| // A#, C, D#, F (1オクターブ上)
@@ -312,7 +312,7 @@ t = TempoClock(132/60); // テンポクロック (132BPM)
 
 // --- 同時再生の実験 ---
 
-// (1) 通常の連続実行 (ほぼ同時に始まるが、厳密な同期ではない)
+//（1）通常の連続実行（ほぼ同時に始まるが、厳密な同期ではない）
 (
 ~r0.reset.play(t);
 ~r1.reset.play(t);
@@ -320,27 +320,27 @@ t = TempoClock(132/60); // テンポクロック (132BPM)
 //停止
 ~r0.stop; ~r1.stop;
 
-// (2) quant を使って厳密に同期 (次の4拍周期の頭から同時に開始)
+//（2）quantを使って厳密に同期（次の4拍周期の頭から同時に開始）
 // 1行ずつ順番に実行
 ~r0.reset.play(t, quant: 4);
 ~r1.reset.play(t, quant: 4);
 //停止
 ~r0.stop; ~r1.stop;
 
-// (3) quant で開始タイミングをずらす
-// ~r0 は次の4拍周期の頭から、~r1 はそこから1拍遅れて開始
+//（3）quantで開始タイミングをずらす
+// ~r0は次の4拍周期の頭から、~r1はそこから1拍遅れて開始
 // 1行ずつ順番に実行
 ~r0.reset.play(t, quant: [4, 0]);
 ~r1.reset.play(t, quant: [4, 1]);
 //停止
 ~r0.stop; ~r1.stop;
 
-// (4) 複数のルーチンインスタンスを異なるタイミングで重ねる
+//（4）複数のルーチンインスタンスを異なるタイミングで重ねる
 // 1行ずつ順番に実行
 ~r0.reset.play(t, quant: [4, 0]); // 0拍目
-~r0.reset.play(t, quant: [4, 1]); // 1拍目から同じ ~r0 を重ねる (カノン風)
+~r0.reset.play(t, quant: [4, 1]); // 1拍目から同じ~r0を重ねる（カノン風）
 ~r1.reset.play(t, quant: [4, 0]); // 0拍目
-~r1.reset.play(t, quant: [4, 1.5]); // 1.5拍目から同じ ~r1 を重ねる
+~r1.reset.play(t, quant: [4, 1.5]); // 1.5拍目から同じ~r1を重ねる
 //停止
 ~r0.stop; ~r1.stop;
 
@@ -355,22 +355,22 @@ Pseq([1, 2, 3], 2).asStream.all; // -> [ 1, 2, 3, 1, 2, 3 ]
 /*
  * list-7_13
  */
-Prand([10, 20, 30], 5).asStream.all; // 例: [ 20, 10, 20, 30, 10 ]
+Prand([10, 20, 30], 5).asStream.all; // 例：[ 20, 10, 20, 30, 10 ]
 
 /*
  * list-7_14
  */
-Pxrand([0, 1], 8).asStream.all; // 例: [ 0, 1, 0, 1, 0, 1, 0, 1 ]
+Pxrand([0, 1], 8).asStream.all; // 例：[ 0, 1, 0, 1, 0, 1, 0, 1 ]
 
 /*
  * list-7_15
  */
-Pwhite(0.0, 0.5, 4).asStream.all; // 例: [ 0.123, 0.456, 0.012, 0.389 ]
+Pwhite(0.0, 0.5, 4).asStream.all; // 例：[ 0.123, 0.456, 0.012, 0.389 ]
 
 /*
  * list-7_16
  */
-Pexprand(0.1, 1.0, 4).asStream.all; // 例: [ 0.15, 0.22, 0.11, 0.35 ]
+Pexprand(0.1, 1.0, 4).asStream.all; // 例：[ 0.15, 0.22, 0.11, 0.35 ]
 
 /*
  * list-7_17
@@ -385,12 +385,12 @@ Pgeom(3, 2, 5).asStream.all; // -> [ 3, 6, 12, 24, 48 ]
 /*
  * list-7_19
  */
-Pbrown(0, 10, 1, 10).asStream.all; // 例: [ 5, 6, 5, 4, 5, 6, 7, 6, 5, 4 ] (開始値は中間付近)
+Pbrown(0, 10, 1, 10).asStream.all; // 例：[ 5, 6, 5, 4, 5, 6, 7, 6, 5, 4 ] （開始値は中間付近）
 
 /*
  * list-7_20
  */
-Pgbrown(0, 5, 1, 15).asStream.all; // 例: [ 2, 3, 4, 5, 4, 3, 2, 1, 0, 1, 2, 3, 4, 5, 4 ]
+Pgbrown(0, 5, 1, 15).asStream.all; // 例：[ 2, 3, 4, 5, 4, 3, 2, 1, 0, 1, 2, 3, 4, 5, 4 ]
 
 /*
  * list-7_21
@@ -401,7 +401,7 @@ Pdup(Pseq([2, 1], inf), Pseq([5, 8], inf)).asStream.nextN(5); // -> [ 5, 5, 8, 5
 /*
  * list-7_22
  */
-Pwrand([0, 1, 2], [0.1, 0.7, 0.2].normalizeSum, 10).asStream.all; // 1 が最も出やすい
+Pwrand([0, 1, 2], [0.1, 0.7, 0.2].normalizeSum, 10).asStream.all; // 1が最も出やすい
 
 /*
  * list-7_23
@@ -410,7 +410,7 @@ Pwrand([0, 1, 2], [0.1, 0.7, 0.2].normalizeSum, 10).asStream.all; // 1 が最も
 //パターンを再生
 p = Pbind(
   \instrument, "RLPF-Saw", // 楽器名
-  \dur, 0.25, // 持続時間 (必須)
+  \dur, 0.25, // 持続時間（必須）
   \amp, 0.8, // 音量
   \midinote, Pseq([60, 64, 65, 67], inf) //C, E, F, G
 ).play;
@@ -424,12 +424,12 @@ p.stop;
  * list-7_24
  */
 (
-// スケールを指定 (メジャースケール)
+// スケールを指定（メジャースケール）
 ~scale = Scale.major;
 //パターンを再生
 p = Pbind(
   \instrument, "RLPF-Saw", // 楽器名
-  \dur, 0.25, // 持続時間 (必須)
+  \dur, 0.25, // 持続時間（必須）
   \amp, 0.8, // 音量
   \scale, ~scale, // スケールの設定
   // スケールの度数で音程を指定
@@ -446,12 +446,12 @@ p.stop;
  * list-7_25
  */
 (
-// スケールを指定 (平調子)
+// スケールを指定（平調子）
 ~scale = Scale.hirajoshi;
 // パターンを再生
 p = Pbind(
   \instrument, "RLPF-Saw", // 楽器名
-  \dur, 0.25, // 持続時間 (必須)
+  \dur, 0.25, // 持続時間（必須）
   \amp, 0.8, // 音量
   \scale, ~scale, // スケールの設定
   // スケールの度数で音程を指定
@@ -468,12 +468,12 @@ p.stop;
  * list-7_26
  */
 (
-// スケールを指定 (平調子)
+// スケールを指定（平調子）
 ~scale = Scale.hirajoshi;
 // パターンを再生
 p = Pbind(
   \instrument, "RLPF-Saw", // 楽器名
-  \dur, 0.25, // 持続時間 (必須)
+  \dur, 0.25, // 持続時間（必須）
   \amp, 0.8, // 音量
   \scale, ~scale, // スケールの設定
   // スケールの度数で音程を指定
@@ -494,10 +494,10 @@ p.stop;
 // パターンを再生
 p = Pbind(
   \instrument, "RLPF-Saw", // 楽器名
-  \dur, 0.25, // 持続時間 (必須)
+  \dur, 0.25, // 持続時間（必須）
   \amp, 0.8, // 音量
   \scale, ~scale, // スケールの設定
-  //オクターブをランダムに設定 (3〜5)
+  //オクターブをランダムに設定（3〜5）
   \octave, Prand([3, 4, 5], inf), // オクターブ
   // ランダムに音程をピックアップ
   \degree, Pxrand([0, 1, 2, 3, 4, 5, 6, 7], inf)
@@ -521,7 +521,7 @@ p = Pbind(
   \amp, 0.8, // 音量
   // スケールの設定
   \scale, ~scale,
-  //オクターブをランダムに設定 (3〜5)
+  //オクターブをランダムに設定（3〜5）
   \octave, Prand([3, 4, 5], inf), // オクターブ
   // ランダムに音程をピックアップ
   \degree, Pxrand([0, 1, 2, 3, 4, 5, 6, 7], inf)
@@ -558,7 +558,7 @@ p = Pbind(
     32,
     Pxrand([Scale.minor, Scale.yu, Scale.hirajoshi, Scale.ritusen, Scale.minorPentatonic], inf)
   ),
-  //オクターブをランダムに設定 (3〜5)
+  //オクターブをランダムに設定（3〜5）
   \octave, Prand([3, 4, 5], inf), // オクターブ
   // ランダムに音程をピックアップ
   \degree, Pxrand([0, 1, 2, 3, 4, 5, 6, 7], inf)
