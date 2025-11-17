@@ -3,8 +3,6 @@
 /*
  * list-6_01
  */
-// Code Example 4.1
-
 // サーバーを起動
 s.boot;
 
